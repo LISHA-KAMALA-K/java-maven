@@ -15,5 +15,28 @@ pipeline{
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+        stage("Test"){
+            steps{
+                echo "====++++executing Test++++===="
+                sh "mvn test"
+            }
+       }
+       stage("Deploy"){
+            steps{
+                echo "====++++executing Deploy++++===="
+                sh './jenkins/scripts/deliver.sh'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Deploy executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Deploy execution failed++++===="
+                }
+           }
+       }
     }
 }
